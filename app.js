@@ -267,16 +267,13 @@ const user = {
             }
         ]
 }
-
-
-app.get("/generateReport", async (req, res) => {
-	await ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {
+const createBody = async()=>{
+    await ejs.renderFile(path.join(__dirname, './views/', "report-template.ejs"), {
         user: user,
         convert: convert
     }, (err, data) => {
         if (err) {
 			console.log(err)
-            res.send(err);
         } else {
             let options_1 = {
                 "border":{
@@ -288,17 +285,18 @@ app.get("/generateReport", async (req, res) => {
                 },
                 "footer": {
                     "height": "35mm",
+                    
                 },
             };
-            pdf.create(data, options_1).toFile("report.pdf", function (err, data) {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.send("File created successfully");
-                }
-            });
+            pdf.create(data, options_1).toFile("report.pdf", function(err, res) {
+                if (err) return console.log(err);
+                console.log(res); 
+            })
         }
     });
+}
+
+const createFirstPage = async() =>{
     await ejs.renderFile(path.join(__dirname, './views/', "first-page.ejs"), {
         user: user,
         convert: convert
@@ -316,21 +314,27 @@ app.get("/generateReport", async (req, res) => {
                     "height": "35mm",
                 },
             };
-            pdf.create(data, options_2).toFile("first-page.pdf", function (err, data) {
+            pdf.create(data, options_2).toFile("first-page.pdf", function (err, res) {
                 if (err) {
                     res.send(err);
                 } else {
-                    res.send("File created successfully");
+                    console.log(res); 
                 }
             });
         }
     });
+}
+
+app.get("/generateReport", async (req, res) => {
+    await createBody();
+    await createFirstPage();
     var merger = new PDFMerger();
     (async () => {
     merger.add('first-page.pdf', [1]);
     merger.add('report.pdf');   
     await merger.save('output.pdf'); //save under given name and reset the internal document
     })();
+    res.send('done')
 })
 
 app.listen(3000);

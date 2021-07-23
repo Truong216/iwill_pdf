@@ -2,15 +2,22 @@
 <html>
 <head>
 <style type="text/css">
+@font-face {
+	font-family: TheSansPlain;
+	src: url("./TheSans-Plain_44259.ttf");
+}
 body { font-family: TheSansPlain; font-size: 53.7px; }
-td { border: 1px solid #dddddd;text-align: center; width: 150px; word-wrap:break-word; }
+td { border: 1px solid white;text-align: center; width: 150px; word-wrap:break-word; }
+th { background-color: #4472c4; color: white;}
+.first {background-color: #cfd5ea;}
+.second {background-color: #e9ebf5;}
 /* .pos { position: absolute; z-index: 0; left: 0px; top: 0px } */
 </style>
 </head>
 <body>
 	<div style="padding-left: 20mm; letter-spacing: 0.5px; padding-right: 30mm; width: 615px;">
 		<div>
-				<p  style=" font-family:TheSansPlain; font-size:17.2px; color:#000000;padding-bottom: 15px;">
+				<p  style="font-size:17.2px; color:#000000;padding-bottom: 15px;">
 					THIS IS THE LAST WILL AND TESTAMENT of (&#147;<%= user.full_legal_name %>&#148;) (NRIC No. <%= user.nric %> ) 
 					of <%= user.address_line_1 %> <%= user.address_line_2 %> whereby I revoke all former 
 					Wills, Codicils and Testamentary dispositions heretofore made by me and 
@@ -208,14 +215,25 @@ td { border: 1px solid #dddddd;text-align: center; width: 150px; word-wrap:break
             </table>
 			<table style="text-align : center; font-family: TheSansPlain;border-collapse: collapse;width: 600px;font-size: 10px; table-layout:fixed;">	
 			<% if (user.properties.length > 0) { %>
-				<% user.properties.forEach(user => {%>
-					<tr>
-						<td style="width: 120px"><%= user.joint_name %></td>
-						<td style="width: 120px"><%= user.country %></td>
-						<td style="width: 120px"><%= user.address_line_1 %></td>
-						<td style="width: 120px"><%= user.is_joint %></td>
-						<td style="width: 120px"><%= user.joint_contact %></td>
-					</tr>
+				<% user.properties.forEach((user,index) => {%>
+					<% if(index % 2 === 0) { %>
+						<tr>
+							<td class="first" style="width: 120px"><%= user.joint_name %></td>
+							<td class="first" style="width: 120px"><%= user.country %></td>
+							<td class="first" style="width: 120px"><%= user.address_line_1 %></td>
+							<td class="first" style="width: 120px"><%= user.is_joint %></td>
+							<td class="first" style="width: 120px"><%= user.joint_contact %></td>
+						</tr>
+						<%}%>
+						<% if(index % 2 !== 0) {%>
+						<tr>
+							<td class="second" style="width: 120px"><%= user.joint_name %></td>
+							<td class="second" style="width: 120px"><%= user.country %></td>
+							<td class="second" style="width: 120px"><%= user.address_line_1 %></td>
+							<td class="second" style="width: 120px"><%= user.is_joint %></td>
+							<td class="second" style="width: 120px"><%= user.joint_contact %></td>
+						</tr>
+						<%}%>
 			<%	});%>
 			<% }%>
 		</table>
@@ -233,15 +251,24 @@ td { border: 1px solid #dddddd;text-align: center; width: 150px; word-wrap:break
             </table>	
 			<table style="text-align : center; font-family: TheSansPlain;border-collapse: collapse;width: 600px;font-size: 10px; table-layout:fixed;">
 				<% if (user.bank_accounts.length > 0) { %>
-					<% user.bank_accounts.forEach(user => {%>
-						<tr>
-							<td><%= user.account_holder %></td>
-							<td><%= user.account_no %></td>
-							<td><%= user.is_solely %></td>
-							<td style="width: 152px"><%= user.current_balance %>
-							</td>
-						</tr>
-				<%	});%>
+					<% user.bank_accounts.forEach((user,index) => {%>
+						<% if(index % 2 === 0) { %>
+							<tr>
+								<td class="first"><%= user.account_holder %></td>
+								<td class="first"><%= user.account_no %></td>
+								<td class="first"><%= user.is_solely %></td>
+								<td class="first" style="width: 152px"><%= user.current_balance %></td>
+							</tr>
+							<%}%>
+							<% if(index % 2 !== 0) {%>
+								<tr>
+									<td class="second"><%= user.account_holder %></td>
+									<td class="second"><%= user.account_no %></td>
+									<td class="second"><%= user.is_solely %></td>
+									<td class="second" style="width: 152px"><%= user.current_balance %></td>
+								</tr>
+							<%}%>
+					<%	});%>
 				<% }%>
 			</table>
     </div>
@@ -259,13 +286,25 @@ td { border: 1px solid #dddddd;text-align: center; width: 150px; word-wrap:break
             </table>	
 			<table style="text-align : center; font-family: TheSansPlain;border-collapse: collapse;width: 600px;font-size: 10px; table-layout:fixed;">	
 			<% if (user.insurance_policies.length > 0) { %>
-				<% user.insurance_policies.forEach(user => {%>
-					<tr>
-						<td style="width: 120px"><%= user.insurance_company %></td>
-						<td style="width: 120px"><%= user.id %></td>
-						<td style="width: 120px"><%= user.policy_name %></td>
-						<td style="width: 120px"><%= user.policy_no %></td>
-						<td style="width: 120px"><%= user.converage %></td></tr>
+				<% user.insurance_policies.forEach((user, index) => {%>
+					<% if(index % 2 === 0) { %>
+						<tr>
+							<td class="first" style="width: 120px"><%= user.insurance_company %></td>
+							<td class="first" style="width: 120px"><%= user.id %></td>
+							<td class="first" style="width: 120px"><%= user.policy_name %></td>
+							<td class="first" style="width: 120px"><%= user.policy_no %></td>
+							<td class="first" style="width: 120px"><%= user.converage %></td>
+						</tr>
+						<%}%>
+						<% if(index % 2 !== 0) {%>
+							<tr>
+								<td class="second" style="width: 120px"><%= user.insurance_company %></td>
+								<td class="second" style="width: 120px"><%= user.id %></td>
+								<td class="second" style="width: 120px"><%= user.policy_name %></td>
+								<td class="second" style="width: 120px"><%= user.policy_no %></td>
+								<td class="second" style="width: 120px"><%= user.converage %></td>
+							</tr>
+					<%}%>
 			<%	});%>
 			<% }%>
 		</table>
@@ -283,13 +322,23 @@ td { border: 1px solid #dddddd;text-align: center; width: 150px; word-wrap:break
             </table>	
 			<table style="text-align : center; font-family: TheSansPlain;border-collapse: collapse;width: 600px;font-size: 10px; table-layout:fixed;">
 				<% if (user.investments.length > 0) { %>
-					<% user.investments.forEach(user => {%>
-						<tr>
-							<td><%= user.capital_outlay %></td>
-							<td><%= user.financial_institutions %></td>
-							<td><%= user.account_no %></td>
-							<td style="width: 152px"><%= user.current_market_value %></td>
-						</tr>
+					<% user.investments.forEach((user,index) => {%>
+						<% if(index % 2 === 0) { %>
+							<tr>
+								<td class="first"><%= user.capital_outlay %></td>
+								<td class="first"><%= user.financial_institutions %></td>
+								<td class="first"><%= user.account_no %></td>
+								<td class="first" style="width: 152px"><%= user.current_market_value %></td>
+							</tr>
+							<%}%>
+							<% if(index % 2 !== 0) {%>
+							<tr>
+								<td class= "second"> <%= user.company_name %></td>  
+								<td class= "second"> <%= user.company_uen %></td>
+								<td class= "second"> <%= user.percentage_share %></td>
+								<td class= "second" style="width: 152px"><%= user.estimated_current_market_value %> </td>
+							</tr>	
+						<%}%>
 				<%	});%>
 				<% }%>
 			</table>
@@ -307,13 +356,23 @@ td { border: 1px solid #dddddd;text-align: center; width: 150px; word-wrap:break
             </table>	
 			<table style="text-align : center; font-family: TheSansPlain;border-collapse: collapse;width: 600px;font-size: 10px; table-layout:fixed;">
 				<% if (user.business_interests.length > 0) { %>
-					<% user.business_interests.forEach(user => {%>
+					<% user.business_interests.forEach( (user, index) => {%>
+						<% if(index % 2 === 0) { %>
 						<tr>
-							<td><%= user.company_name %></td>
-							<td><%= user.company_uen %></td>
-							<td><%= user.percentage_share %></td>
-							<td  style="width: 152px"><%= user.estimated_current_market_value %></td>
+							<td class= "first"> <%= user.company_name %></td>  
+							<td class= "first"> <%= user.company_uen %></td>
+							<td class= "first"> <%= user.percentage_share %></td>
+							<td class= "first" style="width: 152px"> <%= user.estimated_current_market_value %> </td>
 						</tr>
+						<%}%>
+						<% if(index % 2 !== 0) {%>
+						<tr>
+							<td class= "second"> <%= user.company_name %></td>  
+							<td class= "second"> <%= user.company_uen %></td>
+							<td class= "second"> <%= user.percentage_share %></td>
+							<td class= "second" style="width: 152px"> <%= user.estimated_current_market_value %> </td>
+						</tr>	
+						<%}%>
 				<%	});%>
 				<% }%>
 			</table>
